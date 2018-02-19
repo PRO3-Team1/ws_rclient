@@ -3,6 +3,7 @@ var socket = require('socket.io-client')('https://pro3-robot.herokuapp.com/');
 
 console.log("#Export LED GPIO pin");
 fs.writeFileSync("/sys/class/gpio/export","61");
+fs.writeFileSync("/sys/class/gpio/gpio61/direction", "out");
 
 led_blinker.led = "0"; //Current LED state
 led_blinker.state = "flashing"; //flashing, on or off
@@ -39,5 +40,6 @@ socket.on('end', function(){
 
 socket.on('disconnect', function(){
     led_blinker.state = "flashing";
+    console.log("END");
     console.log("#Disconnected from server");
 });
