@@ -2,20 +2,20 @@ const fs = require('fs');
 var socket = require('socket.io-client')('https://pro3-robot.herokuapp.com/');
 
 console.log("#Export LED GPIO pin");
-fs.writeFileSync("/sys/class/gpio/export","61");
+//fs.writeFileSync("/sys/class/gpio/export","61");
 fs.writeFileSync("/sys/class/gpio/gpio61/direction", "out");
 
-led_blinker.led = "0"; //Current LED state
+led_blinker.led = false; //Current LED state
 led_blinker.state = "flashing"; //flashing, on or off
 function led_blinker() {
   if(led_blinker.state === "flashing") {
-    led_blinker.led = (led_blinker.led === "1") ? "0" : "1";
+    led_blinker.led = (led_blinker.led) ? false : true;
   } else if(led_blinker.state === "on") {
-    led_blinker.led = "1";
+    led_blinker.led = true;
   } else if(led_blinker.state === "off") {
-    led_blinker.led = "0";
+    led_blinker.led = false;
   } 
-  fs.writeFileSync("/sys/class/gpio/gpio61/value",led_blinker.state);
+  fs.writeFileSync("/sys/class/gpio/gpio61/value", led_blinker.state? "1" : "0");
   console.log("LED is:",led_blinker.led);
 }
 
