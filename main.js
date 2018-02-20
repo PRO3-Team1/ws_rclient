@@ -1,8 +1,6 @@
 const fs = require('fs');
 var socket = require('socket.io-client')('https://pro3-robot.herokuapp.com/');
 
-console.log("#Export LED GPIO pin");
-//fs.writeFileSync("/sys/class/gpio/export","61");
 fs.writeFileSync("/sys/class/gpio/gpio61/direction", "out");
 
 led_blinker.led = false; //Current LED state
@@ -16,7 +14,6 @@ function led_blinker() {
     led_blinker.led = false;
   } 
   fs.writeFileSync("/sys/class/gpio/gpio61/value", led_blinker.state? "1" : "0");
-  console.log("LED is:",led_blinker.led);
 }
 
 setInterval(led_blinker, 500); //Periodic blinker
